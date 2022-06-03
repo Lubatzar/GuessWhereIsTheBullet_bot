@@ -88,17 +88,14 @@ async Task HandleUpdateAsync(ITelegramBotClient botClient, Update update, Cancel
             
             if (chanse.Next(100) < user.Chanse)
             {
-                Console.WriteLine($"Bruh {user.Shots}");
-                user.Shots += 1;
                 sentMessage = await botClient.SendTextMessageAsync(
                     chatId: chatId,
-                    text: "Ты выжи3845675е98347м58934л! ;)\n" +
+                    text: "Ты выжил! ;)\n" +
                           $"Вероятность, что ты бы вышел была {user.Chanse.ToString("N2")}%\n" +
-                          "Неплохо, продолжим дальше?",
+                          "Неплохо, продолжим дальше",
                     cancellationToken: cancellationToken);
                 user.Chanse *= (double) chanse.Next(9400, 9600) / 10000;
-                // Console.WriteLine($"Bruh {user.Shots}");
-                // user.Shots += 1;
+                user.Shots += 1;
                 
                 if (user.Shots == 5)
                 {
@@ -118,7 +115,7 @@ async Task HandleUpdateAsync(ITelegramBotClient botClient, Update update, Cancel
                     chatId: chatId,
                     text: "Ты умер! ;)\n" +
                           $"Вероятность, что ты бы выжил была {user.Chanse.ToString("N2")}%\n" +
-                          "Но ты unlucky\n" +
+                          $"Но ты unlucky, умер на {user.Shots + 1} пуле\n" +
                           $"Ты воскреснешь через {timeleft:hh} часов {timeleft:mm} минут ;)",
                     cancellationToken: cancellationToken);
                 user.Date += DateTime.Today.AddDays((1)) - DateTime.Now;
@@ -132,8 +129,7 @@ async Task HandleUpdateAsync(ITelegramBotClient botClient, Update update, Cancel
             sentMessage = await botClient.SendTextMessageAsync(
                 chatId: chatId,
                 text: "Попыток на сегодня не осталось!\n" +
-                      $"Вы умерли на {user.Shots} пуле" +
-                      $"Возвращайтесь через {timeleft:hh} часов {timeleft:mm} минут\n",
+                      $"Возвращайся через {timeleft:hh} часов {timeleft:mm} минут\n",
                 cancellationToken: cancellationToken);
             user.Shots = 0;
         }
